@@ -36,16 +36,17 @@ let foobar = 838383;
 
 	for i, tt := range tests {
 		stmt := program.Statements[i]
-		if !testLetStatements(t, stmt, tt.expectedIdentifier) {
+		if !testLetStatement(t, stmt, tt.expectedIdentifier) {
 			return
 		}
 	}
 }
 
-func testLetStatements(t *testing.T, s ast.Statement, name string) bool {
+func testLetStatement(t *testing.T, s ast.Statement, name string) bool {
 	if s.TokenLiteral() != "let" {
 		t.Errorf("s.TokenLiteral not 'let'. got=%q", s.TokenLiteral())
 	}
+
 	letStmt, ok := s.(*ast.LetStatement)
 	if !ok {
 		t.Errorf("s not *ast.LetStatement. got=%T", s)
@@ -56,7 +57,8 @@ func testLetStatements(t *testing.T, s ast.Statement, name string) bool {
 		return false
 	}
 	if letStmt.Name.TokenLiteral() != name {
-		t.Errorf("letStmt.Name.TokenLiteral not '%s'. got=%s", name, letStmt.Name.TokenLiteral())
+		t.Errorf("letStmt.Name.TokenLiteral not '%s'. got=%s",
+			name, letStmt.Name.TokenLiteral())
 		return false
 	}
 
